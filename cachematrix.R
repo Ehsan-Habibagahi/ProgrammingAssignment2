@@ -1,10 +1,21 @@
-## Put comments here that give an overall description of what your
 ## functions do
 
-## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-
+        cacheInverse <- NULL
+        set <- function(m) {
+                x <<- m
+                cacheInverse <<- NULL
+        }
+        get <- function() x
+        setInverse <- function() cacheInverse <<- solve(x)
+        getInverse <- function() cacheInverse
+        # used for encapsulation
+        list(
+                set = set, get = get,
+                setsolve = setsolve,
+                getsolve = getsolve
+        )
 }
 
 
@@ -12,4 +23,10 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        inverseMatrix <- x$getInverse()
+        if (is.null(inverseMatrix)) {
+                x$setsolve()
+                return(x$getInverse())
+        }
+        inverseMatrix
 }
